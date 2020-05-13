@@ -1,0 +1,38 @@
+#game_name {
+    text-align: center;
+    font-size: 170px;
+}
+
+#c {
+    color: red;
+}
+
+#o {
+    color: blue;
+}
+
+#l {
+    color: yellow;
+}
+
+#r {
+    color: green;
+}
+
+#start_screen {
+    text-align: center;
+    font-size: 30px;
+}
+
+html {
+    background-color: lightpink;
+}
+
+.enter {
+    font-size: 30px;
+}
+
+#end {
+    font-size: 40px;
+    text-align: center;
+}

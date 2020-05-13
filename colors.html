@@ -4,8 +4,30 @@
     <meta charset="utf-8">
   </head>
   <body>
+    <h1 id="game_name"><em id="c">C</em><em id="o">O</em><em id="l">L</em><em id="o">O</em><em id="r">R</em><em id="s">S</em></h1>
+    <div id="start_screen">
+      <h2>WELCOME TO COLORS!</h2>
+      <p><em></em></p>
+      <p>INSTRUCTIONS</p>
+      <ul>
+        <li>Click the screen to make a ball biunce up in the air</li>
+        <li>You'll have obstacles in your path</li>
+        <li>To pass the obstacle, have faith in the ball's color</li>
+        <li>Lack of faith will result in defeat</li>
+        <li>Keep moving as long as you can manage</li>
+        <li><strong>HINT:<em>If youstop moving, you're making the game harder for yourself</em></strong></li>
+        <li>As long as you move, your score ticks forward</li>
+        <li>DO NOT DISSAPOINT ME!</li>
+      </ul>
+      <input class="enter" type="button" value="Start Game" onclick="Start_Game()">
+    </div>
       <canvas id="canvas" style="border: 1px solid black;">Canvas is not supported!</Canvas>
-      <input id="button" type="submit" name="button" value="enter"/>
+    <div id="end">
+      <h1>Unfortunate, but inevitable!</h1>
+      <h1>You have lost</h1>
+      <h2>Score: <strong id="score"></strong></h2>
+      <h2>Time: <strong id="hours"></strong> minutes and <strong id="sec"></strong> seconds!</h2>
+    </div>
       <script src="colors_script.js"></script>
   </body>
 </html>  
