@@ -4,6 +4,16 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 var j=0;
+var mx=undefined,my=undefined,temp=(0.75*innerHeight);
+var seconds=0,minutes=0;
+
+canvas.addEventListener("click",timing);
+canvas.addEventListener("click",function(e){
+  mx=e.clientX;
+  my=e.clientY;
+  ball.vy=30;
+  ball.gravity=2;
+});
 
 var ball = {
     x: innerWidth/2,
@@ -73,10 +83,39 @@ var ball = {
       }
   }
 
+  var wheelArray=[];
+
+  function timing()
+  {                                                           
+    myvar=setInterval(ttiming, 1000);
+  }
+  
+  function ttiming()
+  {
+      seconds++;
+      if(seconds==60)
+      {
+          seconds=0;
+          minutes++;
+      }
+      if(seconds==1 || seconds%30==0){
+      wheelArray.push(new wheel());
+      }
+      canvas.removeEventListener("click",timing);
+  } 
+
+
   function animate() {
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    ball.update();
-    wheel.update();
+    if(mx>0 && mx<innerWidth && my>0 && my<innerHeight)
+    {
+      ball.update();
+    }
+    for(let i=0;i<wheelArray.length;i++)
+    {
+        ctx.save();
+        wheelArray[i].update();
+    }
     requestAnimationFrame(animate);
   }
 
