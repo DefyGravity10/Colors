@@ -3,8 +3,13 @@ var ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+
+var t=2;
+
+var dif,p;
+var truth=undefined;
 var j=0;
-var mx=undefined,my=undefined,temp=(0.75*innerHeight);
+var mx=undefined,my=undefined,temp=(0.75*innerHeight)-t;
 var seconds=0,minutes=0;
 
 canvas.addEventListener("click",timing);
@@ -14,6 +19,14 @@ canvas.addEventListener("click",function(e){
   ball.vy=30;
   ball.gravity=2;
 });
+
+function getDistance(x1,y1,x2,y2)
+{
+    let xD=x1-x2;
+    let yD=y1-y2;
+
+    return Math.sqrt(xD**2 + yD**2);
+}
 
 var ball = {
     x: innerWidth/2,
@@ -38,6 +51,17 @@ var ball = {
       {
         this.vy=0;
         this.gravity=0;
+      }
+      for(var d=0;d<wheelArray.length;d++)
+      { 
+      var distance=getDistance(this.x,this.y,wheelArray[d].x,wheelArray[d].y);
+      if(distance<=this.radius+wheelArray[d].radius2)
+      {
+        if(this.color==wheelArray[d].color)
+        {
+        console.log("hit me");
+        }
+      }
       }
       this.draw();
     }
@@ -79,6 +103,13 @@ var ball = {
         if(j==360)
           j=0;
         
+        if(j>=225-90 && j<=315-90)
+        {
+           this.color="red";
+        }  
+        else{
+            this.color=undefined;
+        }
         this.draw();
       }
   }
