@@ -1,12 +1,37 @@
+function Start_Game()
+{
+  document.getElementById("game_name").style.display="none";
+  document.getElementById("start_screen").style.display="none";
+  document.getElementById("canvas").style.display="block";
+}
+
+function game_lost()
+{
+  document.getElementById("canvas").style.display="none";
+  clearInterval(myvar);
+  t_value='false';
+  document.getElementById("score").innerHTML=score;
+  document.getElementById("hours").innerHTML=minutes;
+  document.getElementById("sec").innerHTML=seconds;
+  document.getElementById("end").style.display="block";
+}
+
+document.getElementById("end").style.display="none";
+
+
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+canvas.style.display="none"; 
+
 var origin_x=0,origin_y=0;
 var change_y=0.75*innerHeight-500;
 
 var dif,p;
+var score=0;
+var t_value='true';
 var truth=undefined;
 var j=0;
 var mx=undefined,my=undefined,temp=(0.75*innerHeight);
@@ -53,6 +78,12 @@ var ball = {
         this.vy=0;
         this.gravity=0;
       }
+
+      if(seconds>7 && this.y==756.75)      
+      {
+        game_lost();
+      }
+
       for(var d=0;d<wheelArray.length;d++)
       { 
       var distance=getDistance(this.x,this.y,wheelArray[d].x,wheelArray[d].y);
@@ -61,6 +92,9 @@ var ball = {
         if(this.color==wheelArray[d].color)
         {
         console.log("hit me");
+        }
+        else{
+          game_lost();         
         }
       }
       }
@@ -152,8 +186,10 @@ var ball = {
         wheelArray[i].update();
     }
 
-    if(seconds>=1)
+    if(seconds>=1 && t_value=='true'){        
       ctx.translate(0,1);
+      score+=0.05;
+    }
     requestAnimationFrame(animate);
   }
 
