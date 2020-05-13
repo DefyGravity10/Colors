@@ -3,13 +3,13 @@ var ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-
-var t=2;
+var origin_x=0,origin_y=0;
+var change_y=0.75*innerHeight-500;
 
 var dif,p;
 var truth=undefined;
 var j=0;
-var mx=undefined,my=undefined,temp=(0.75*innerHeight)-t;
+var mx=undefined,my=undefined,temp=(0.75*innerHeight);
 var seconds=0,minutes=0;
 
 canvas.addEventListener("click",timing);
@@ -18,6 +18,7 @@ canvas.addEventListener("click",function(e){
   my=e.clientY;
   ball.vy=30;
   ball.gravity=2;
+  temp=ball.y;
 });
 
 function getDistance(x1,y1,x2,y2)
@@ -69,8 +70,8 @@ var ball = {
 
   class wheel {
     constructor(){
-      this.x= innerWidth/2,
-      this.y= 0
+      this.x= innerWidth/2;
+      this.y= change_y-500;
       this.dy= 0.2;
       this.radius2= 120;
       this.color= undefined;
@@ -129,15 +130,18 @@ var ball = {
           seconds=0;
           minutes++;
       }
-      if(seconds==1 || seconds%30==0){
-      wheelArray.push(new wheel());
+      if(seconds==1 || seconds%10==0){
+        change_y=ball.y;
+        wheelArray.push(new wheel());
       }
       canvas.removeEventListener("click",timing);
   } 
 
+  var b=0;
 
   function animate() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(origin_x--,origin_y--,canvas.width+b,canvas.height+b);
+    b++;
     if(mx>0 && mx<innerWidth && my>0 && my<innerHeight)
     {
       ball.update();
@@ -147,6 +151,9 @@ var ball = {
         ctx.save();
         wheelArray[i].update();
     }
+
+    if(seconds>=1)
+      ctx.translate(0,1);
     requestAnimationFrame(animate);
   }
 
