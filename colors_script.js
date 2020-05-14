@@ -23,6 +23,7 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+var error_check_sec=0;
 
 canvas.style.display="none"; 
 
@@ -44,6 +45,7 @@ canvas.addEventListener("click",function(e){
   ball.vy=30;
   ball.gravity=2;
   temp=ball.y;
+  error_check_sec=0;
 });
 
 function getDistance(x1,y1,x2,y2)
@@ -159,6 +161,7 @@ var ball = {
   function ttiming()
   {
       seconds++;
+      error_check_sec++;
       if(seconds==60)
       {
           seconds=0;
@@ -167,6 +170,11 @@ var ball = {
       if(seconds==1 || seconds%10==0){
         change_y=ball.y;
         wheelArray.push(new wheel());
+      }
+
+      if(error_check_sec==10)
+      {
+        game_lost();
       }
       canvas.removeEventListener("click",timing);
   } 
