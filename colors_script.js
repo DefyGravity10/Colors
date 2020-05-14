@@ -1,11 +1,11 @@
-function Start_Game()
+function Start_Game()                                                                       //Function links to game page from start page
 {
   document.getElementById("game_name").style.display="none";
   document.getElementById("start_screen").style.display="none";
   document.getElementById("canvas").style.display="block";
 }
 
-function game_lost()
+function game_lost()                                                                        //Function links to end game screen from game
 {
   document.getElementById("canvas").style.display="none";
   clearInterval(myvar);
@@ -23,23 +23,22 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-var error_check_sec=0;
 
 canvas.style.display="none"; 
 
-var origin_x=0,origin_y=0;
-var change_y=0.75*innerHeight-500;
+var origin_x=0,origin_y=0;                                                                //Variables to reference origin
+var change_y=0.75*innerHeight-500;                                                        //Variable to reference position of wheel
+var error_check_sec=0;                                                                    //Variable to start a background timer caused due to inactivity from the player
 
 var dif,p;
-var score=0;
-var t_value='true';
-var truth=undefined;
-var j=0;
-var mx=undefined,my=undefined,temp=(0.75*innerHeight);
-var seconds=0,minutes=0;
+var score=0;                                                                              //Variable to hold score
+var t_value='true';                                                                       //Variable when holds true if the player has not lost
+var j=0;                                                                                  //Variable to adjust rotation of wheel
+var mx=undefined,my=undefined,temp=(0.75*innerHeight);                                    //Variables mx and my hold position of mouse click, temp stores position of ball when it starts the bounce
+var seconds=0,minutes=0;                                                                  //Variables to store seconds and minute values for the background timer
 
-canvas.addEventListener("click",timing);
-canvas.addEventListener("click",function(e){
+canvas.addEventListener("click",timing);                                                  //Starts the timer
+canvas.addEventListener("click",function(e){                                              //Initial settings before every bounce
   mx=e.clientX;
   my=e.clientY;
   ball.vy=30;
@@ -48,7 +47,7 @@ canvas.addEventListener("click",function(e){
   error_check_sec=0;
 });
 
-function getDistance(x1,y1,x2,y2)
+function getDistance(x1,y1,x2,y2)                                                         //Function to return distance between the ball and a wheel
 {
     let xD=x1-x2;
     let yD=y1-y2;
@@ -56,7 +55,7 @@ function getDistance(x1,y1,x2,y2)
     return Math.sqrt(xD**2 + yD**2);
 }
 
-var ball = {
+var ball = {                                                                              //Ball object
     x: innerWidth/2,
     y: 0.75*innerHeight,
     vx: 0,
@@ -71,7 +70,7 @@ var ball = {
       ctx.fill();
       ctx.closePath();
     },
-    update: function(){
+    update: function(){                                                                    //To update the animation with specific conditions
   
       this.vy-=this.gravity;
       this.y-=this.vy; 
@@ -104,7 +103,7 @@ var ball = {
     }
   };
 
-  class wheel {
+  class wheel {                                                                         //Wheel object
     constructor(){
       this.x= innerWidth/2;
       this.y= change_y-500;
@@ -131,7 +130,7 @@ var ball = {
           ctx.fill();
           ctx.restore();  
       }
-      update(){
+      update(){                                                                         //Function takes care or rotation and hit region
         this.y+=this.dy;
         ctx.translate(this.x,this.y);
         ctx.rotate(j*Math.PI/180);
@@ -151,14 +150,14 @@ var ball = {
       }
   }
 
-  var wheelArray=[];
+  var wheelArray=[];                                                                    //List to store all wheel objects
 
   function timing()
-  {                                                           
+  {                                                                                     //Sets interval for timer to 1 sec
     myvar=setInterval(ttiming, 1000);
   }
   
-  function ttiming()
+  function ttiming()                                                                    //Function to increment seconds, minutes variable, and to check for inactivity
   {
       seconds++;
       error_check_sec++;
@@ -167,7 +166,7 @@ var ball = {
           seconds=0;
           minutes++;
       }
-      if(seconds==1 || seconds%10==0){
+      if(seconds==1 || seconds%10==0){                                                  //Also, a new wheel appears every 10 seconds
         change_y=ball.y;
         wheelArray.push(new wheel());
       }
@@ -181,20 +180,20 @@ var ball = {
 
   var b=0;
 
-  function animate() {
-    ctx.clearRect(origin_x--,origin_y--,canvas.width+b,canvas.height+b);
+  function animate() {                                                                  //Function called again and again which provides necessary frames for animation
+    ctx.clearRect(origin_x--,origin_y--,canvas.width+b,canvas.height+b);                //Canvas is cleared before every frame
     b++;
-    if(mx>0 && mx<innerWidth && my>0 && my<innerHeight)
+    if(mx>0 && mx<innerWidth && my>0 && my<innerHeight)                                 //Condition check for click on canvas
     {
-      ball.update();
+      ball.update();                                                                    //Updates ball animation
     }
-    for(let i=0;i<wheelArray.length;i++)
+    for(let i=0;i<wheelArray.length;i++)                                                //Updates wheel animation
     {
         ctx.save();
         wheelArray[i].update();
     }
 
-    if(seconds>=1 && t_value=='true'){        
+    if(seconds>=1 && t_value=='true'){                                                  //The game screen keeps moving down, to make game interesting
       ctx.translate(0,1);
       score+=0.05;
     }
