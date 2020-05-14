@@ -7,9 +7,23 @@ function Start_Game()                                                           
 
 function game_lost()                                                                        //Function links to end game screen from game
 {
+  lose.play();
   document.getElementById("canvas").style.display="none";
   clearInterval(myvar);
   t_value='false';
+  score_check=localStorage.getItem("highscore");
+  
+  if(score>score_check)                                                                   //To update highscore
+  {
+    highscore=score;
+    score_check=score;
+    localStorage.setItem("highscore",score);
+  }
+  else{
+    highscore=score_check;
+  }
+  
+  document.getElementById("highscore").innerHTML=highscore;
   document.getElementById("score").innerHTML=score;
   document.getElementById("hours").innerHTML=minutes;
   document.getElementById("sec").innerHTML=seconds;
@@ -18,6 +32,10 @@ function game_lost()                                                            
 
 document.getElementById("end").style.display="none";
 
+var sound=new Audio();                                                                    //Creating audio elements for sound effects in the game
+sound.src="sound.mp3";
+var lose=new Audio();
+lose.src="youlose.mp3";
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
@@ -37,6 +55,10 @@ var j=0;                                                                        
 var mx=undefined,my=undefined,temp=(0.75*innerHeight);                                    //Variables mx and my hold position of mouse click, temp stores position of ball when it starts the bounce
 var seconds=0,minutes=0;                                                                  //Variables to store seconds and minute values for the background timer
 
+/*localStorage.setItem("highscore",score);*/
+var score_check=0;
+var highscore;
+
 canvas.addEventListener("click",timing);                                                  //Starts the timer
 canvas.addEventListener("click",function(e){                                              //Initial settings before every bounce
   mx=e.clientX;
@@ -45,6 +67,7 @@ canvas.addEventListener("click",function(e){                                    
   ball.gravity=2;
   temp=ball.y;
   error_check_sec=0;
+  sound.play();
 });
 
 function getDistance(x1,y1,x2,y2)                                                         //Function to return distance between the ball and a wheel
